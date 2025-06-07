@@ -49,4 +49,5 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
   gem 'faker' # optional for generating random data
+  gem 'rails-controller-testing'
 end
