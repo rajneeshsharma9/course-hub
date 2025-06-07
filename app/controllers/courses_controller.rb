@@ -9,6 +9,11 @@ class CoursesController < ApplicationController
     end
   end
 
+  def index
+    courses = Course.includes(:tutors).all
+    render json: courses.as_json(include: :tutors)
+  end
+
   private
 
   def course_params

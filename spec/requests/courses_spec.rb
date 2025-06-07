@@ -53,4 +53,33 @@ RSpec.describe "Courses API", type: :request do
       end
     end
   end
+
+  describe "GET /courses" do
+    before do
+      @course1 = create(:course, name: "Physics 101")
+      create(:tutor, name: "Alice", email: "alice@example.com", course: @course1)
+      create(:tutor, name: "Bob", email: "bob@example.com", course: @course1)
+
+      @course2 = create(:course, name: "Math 101")
+      # No tutors for course2
+    end
+
+    it "returns all courses with their tutors" do
+      get "/courses"
+
+      expect(response).to have_http_status(:ok)
+
+      json = JSON.parse(response.body)
+
+      expect(json.size).to eq(2)
+
+      physics_course = json.find { |c| c["name"] == "Physics 101" }
+      expect(physics_course["tutors"].size).to eq(2)
+      tutor_names = physics_course["tutors"].map { |t| t["name"] }
+      expect(tutor_names).to include("Alice", "Bob")
+
+      math_course = json.find { |c| c["name"] == "Math 101" }
+      expect(math_course["tutors"]).to eq([])
+    end
+  end
 end
