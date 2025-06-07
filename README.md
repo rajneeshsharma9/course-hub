@@ -1,24 +1,53 @@
-# README
+# CourseTutor API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple Ruby on Rails API-only application to manage **Courses** and their **Tutors**.
 
-Things you may want to cover:
+- A **Course** can have many tutors.
+- A **Tutor** belongs to exactly one course.
 
-* Ruby version
+---
 
-* System dependencies
+## Features
 
-* Configuration
+- Create courses along with associated tutors in a single API call.
+- List all courses with their tutors.
+- Validation and associations enforced at the model level.
+- Fully tested with RSpec, FactoryBot, and Shoulda Matchers.
 
-* Database creation
+---
 
-* Database initialization
+## Tech Stack
 
-* How to run the test suite
+- Ruby on Rails (API mode)
+- SQLite3 (default database)
+- RSpec for testing
+- FactoryBot for test data
+- Shoulda Matchers for concise model specs
 
-* Services (job queues, cache servers, search engines, etc.)
+---
 
-* Deployment instructions
+## Getting Started
 
-* ...
+### Prerequisites
+
+- Ruby 3.2.6
+- Rails 8.0.2
+- Bundler
+
+---
+
+### Setup
+
+```bash
+# Clone repo
+git clone https://github.com/rajneeshsharma9/course-hub.git
+cd course-hub
+
+# Install dependencies
+bundle install
+
+# Set up database
+rails db:create db:migrate
+
+# Run tests (optional but recommended)
+bundle exec rspec
