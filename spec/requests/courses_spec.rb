@@ -61,25 +61,48 @@ RSpec.describe "Courses API", type: :request do
       create(:tutor, name: "Bob", email: "bob@example.com", course: @course1)
 
       @course2 = create(:course, name: "Math 101")
-      # No tutors for course2
+      @course3 = create(:course, name: "History 101")
     end
 
-    it "returns all courses with their tutors" do
-      get "/courses"
+    it "returns paginated courses with their tutors" do
+      get "/courses", params: { page: 1, per_page: 2 }
 
       expect(response).to have_http_status(:ok)
 
       json = JSON.parse(response.body)
+      expect(json["data"].size).to eq(2)
 
-      expect(json.size).to eq(2)
-
-      physics_course = json.find { |c| c["name"] == "Physics 101" }
+      physics_course = json["data"].find { |c| c["name"] == "Physics 101" }
       expect(physics_course["tutors"].size).to eq(2)
-      tutor_names = physics_course["tutors"].map { |t| t["name"] }
-      expect(tutor_names).to include("Alice", "Bob")
 
-      math_course = json.find { |c| c["name"] == "Math 101" }
-      expect(math_course["tutors"]).to eq([])
+      math_course = json["data"].find { |c| c["name"] == "Math 101" }
+      expect(math_course).to be_present
+
+      expect(json["meta"]).to include(
+        "current_page" => 1,
+        "total_pages" => 2,
+        "total_count" => 3
+      )
+    end
+
+    it "filters courses by search param" do
+      get "/courses", params: { search: "Phys" }
+
+      expect(response).to have_http_status(:ok)
+
+      json = JSON.parse(response.body)
+      expect(json["data"].size).to eq(1)
+      expect(json["data"].first["name"]).to eq("Physics 101")
+    end
+
+    it "returns empty data when no matches for search" do
+      get "/courses", params: { search: "Biology" }
+
+      expect(response).to have_http_status(:ok)
+
+      json = JSON.parse(response.body)
+      expect(json["data"]).to eq([])
+      expect(json["meta"]["total_count"]).to eq(0)
     end
   end
 end

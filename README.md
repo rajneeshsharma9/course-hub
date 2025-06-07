@@ -47,7 +47,7 @@ cd course-hub
 bundle install
 
 # Set up database
-rails db:create db:migrate
+rails db:create db:migrate db:seed
 
 # Run tests (optional but recommended)
 bundle exec rspec
