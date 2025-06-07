@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 class CoursesController < ApplicationController
   def create
     course = Course.new(course_params)
 
     if course.save
-      render json: course.as_json(include: :tutors), status: :created
+      render_success(course, status: :created, include: :tutors)
     else
-      render json: { errors: course.errors.full_messages }, status: :unprocessable_entity
+      render_error(course)
     end
   end
 
   def index
     courses = Course.includes(:tutors).all
-    render json: courses.as_json(include: :tutors)
+    render_success(courses, include: :tutors)
   end
 
   private
