@@ -20,7 +20,7 @@ class CoursesController < ApplicationController
 
     versioned_key = "v1/courses_with_tutors/#{courses_cache_key(paginated)}"
     cached_courses = Rails.cache.fetch(versioned_key, expires_in: LONG_CACHE_TIME) do
-      paginated.as_json(include: [:tutors])
+      paginated.as_json(include: [ :tutors ])
     end
 
     render json: {
@@ -39,7 +39,7 @@ class CoursesController < ApplicationController
     params.require(:course).permit(
       :name,
       :description,
-      tutors_attributes: [:name, :email]
+      tutors_attributes: [ :name, :email ]
     )
   end
 
