@@ -51,3 +51,10 @@ rails db:create db:migrate db:seed
 
 # Run tests (optional but recommended)
 bundle exec rspec
+```
+
+## API Testing
+
+You can test the API endpoints using the following Postman collection:
+
+[Download Postman Collection](https://drive.google.com/file/d/1nOCaYlW-5H8JUiLoivW7V8rZuL7J_xV6/view?usp=sharing)
